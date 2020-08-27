@@ -18,7 +18,7 @@ class DB {
         //this.connection.query()
     }
     findRoles(){
-        return {hey: 'working ROLES'}
+        return this.connection.query("SELECT role.id, role.title,role.salary FROM role LEFT JOIN department on role.department_id = department.id");
     }
 
 }
@@ -28,3 +28,4 @@ class DB {
 // }
 
 module.exports = new DB(connection);
+

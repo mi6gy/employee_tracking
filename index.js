@@ -99,46 +99,15 @@ async function viewRoles() {
     console.log("__________")
     start();
 }
-function addEmployees() {
-    inquirer
-        .prompt([
-            {
-                type: "input",
-                message: "Enter employee first name",
-                name: "firstname"
-            },
-            {
-                type: "input",
-                message: "Enter employee last name",
-                name: "lastname"
-            }
-        ])
-        .then(function (answer) {
-            connection.query(
-                "INSERT INTO employee SET ?",
-                {
-                    first_name: answer.firstname,
-                    last_name: answer.lastname,
-                    role_id: null,
-                    manager_id: null
-                },
-                function (err, answer) {
-                    if (err) {
-                        throw err;
-                    }
-                    console.table(answer);
-                }
-            );
-            start();
-        })
 
 
+// async function viewEmployeesDepart(){
+// const department = await db.findEmployeesDepart();
+// console.table(department);
+// console.log("_______________")
+// const
 
-
-}
-
-
-
+// }node
 
 
 start();
