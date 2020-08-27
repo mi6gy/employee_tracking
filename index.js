@@ -4,6 +4,8 @@
 
 const inquirer = require("inquirer");
 const db = require("./db/index");
+const { async } = require("rxjs");
+const connection = require("./db/conection");
 require("console.table");
 
 async function start() {
@@ -15,8 +17,10 @@ async function start() {
             choices: [
                 { name: "View ALL Employees", value: "VIEW_EMPLOYEES" },
                 { name: "View Employees by Dept", value: "VIEW_EMPLOYEES_BY_DEPT" },
-                { name: "View Employees by Manager", value: "VIEW_EMPLOYEE_BY_MANAGER" },
-                { name: "Update Manager", value: "UPDATE_EMPLOYEE_MANAGER" },
+                { name: "View Employees by Manager", value: "VIEW_EMPLOYEE_BY_MANAGER" }
+                ,
+                { name: "Update Manager", value: "UPDATE_EMPLOYEE_MANAGER" }
+                ,
                 { name: "ADD Employee", value: "ADD_EMPLOYEE" },
                 { name: "REMOVE Employee", value: "REMOVE_EMPLOYEE" },
                 { name: "UPDATE Employee Role", value: "UPDATE_EMPLOYEE_ROLE" },
@@ -39,7 +43,7 @@ async function start() {
         case "VIEW_EMPLOYEE_BY_MANAGER":
             return viewEmployeesManager();
         case "ADD_EMPLOYEE":
-            return addEmployee();
+            return addEmployees();
         case "REMOVE_EMPLOYEE":
             return removeEmployee();
         case "UPDATE_EMPLOYEE_ROLE":
@@ -91,10 +95,46 @@ async function viewEmployeesManager() {
 }
 async function viewRoles() {
     const data = await db.findRoles();
-    //  console.log(data)
     console.table(data);
     console.log("__________")
     start();
+}
+function addEmployees() {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: "Enter employee first name",
+                name: "firstname"
+            },
+            {
+                type: "input",
+                message: "Enter employee last name",
+                name: "lastname"
+            }
+        ])
+        .then(function (answer) {
+            connection.query(
+                "INSERT INTO employee SET ?",
+                {
+                    first_name: answer.firstname,
+                    last_name: answer.lastname,
+                    role_id: null,
+                    manager_id: null
+                },
+                function (err, answer) {
+                    if (err) {
+                        throw err;
+                    }
+                    console.table(answer);
+                }
+            );
+            start();
+        })
+
+
+
+
 }
 
 
