@@ -11,8 +11,8 @@ class DB {
     }
 }
 
-// cretaeEmployee(){
-//     return this.connection.query()
+// //cretaeEmployee(){
+//     return this.con
 // }
 
 module.exports = new DB(connection);
